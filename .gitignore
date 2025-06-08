@@ -1,0 +1,22 @@
+# Entornos virtuales
+venv/
+.env
+
+# Archivos de configuración del sistema
+.DS_Store
+Thumbs.db
+
+# Caché de Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Archivos de log
+*.log
+
+# Fly.io deployments
+fly.toml~
+
+# Archivos sensibles o temporales
+*.pem
+*.sqlite3
