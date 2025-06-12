@@ -41,7 +41,7 @@ def ejecutar_operacion(senal):
             log("✅ Orden de COMPRA ejecutada")
 
         elif senal == "venta":
-            balance = client.get_asset_balance(asset="SOL")
+            balance = client.get_asset_balance(asset="BTC")
             cantidad = round(float(balance["free"]), 6)
             if cantidad > 0:
                 client.order_market_sell(symbol=SYMBOL, quantity=cantidad)
