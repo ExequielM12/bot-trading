@@ -36,6 +36,7 @@ def ejecutar_operacion(senal):
         if senal == "compra":
             precio_actual = float(client.get_symbol_ticker(symbol=SYMBOL)["price"])
             cantidad = round(USDT_INICIAL / precio_actual, 6)
+            log(f"🔍 Intentando comprar {cantidad} BTC (~{USDT_INICIAL} USDT) a precio {precio_actual}")
             client.order_market_buy(symbol=SYMBOL, quoteOrderQty=USDT_INICIAL)
             enviar_telegram("🟢 Compra ejecutada")
             log("✅ Orden de COMPRA ejecutada")
@@ -43,13 +44,17 @@ def ejecutar_operacion(senal):
         elif senal == "venta":
             balance = client.get_asset_balance(asset="BTC")
             cantidad = round(float(balance["free"]), 6)
+            log(f"🔍 Intentando vender {cantidad} BTC")
             if cantidad > 0:
                 client.order_market_sell(symbol=SYMBOL, quantity=cantidad)
                 enviar_telegram("🔴 Venta ejecutada")
                 log("✅ Orden de VENTA ejecutada")
+            else:
+                log("⚠️ No hay BTC suficiente para vender.")
     except BinanceAPIException as e:
-        enviar_telegram(f"⚠️ Error en la orden: {e.message}")
-        log(f"❌ Error: {e.message}")
+        error_msg = f"⚠️ Binance API error: {e.message} | Código: {e.code}"
+        enviar_telegram(error_msg)
+        log(f"❌ Binance API error: {e.message} | Código: {e.code} | Body: {e.response.text}")
 
 def ejecutar_bot():
     while True:
